@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model generalised_recommendations {
+  rule_idx           Int?
+  usabilityGoal      String?
+  usabilityPrinciple String?
+  ageGroup           String?
+  applicationDomain  String?
+  disorder           String?
+  gamificationGoal   String?
+  genRecommendation  String?
+  example            String?
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model not_suitable_gamification_elements {
+  rule_idx                       Int?
+  ageGroup                       String?
+  applicationDomain              String?
+  disorder                       String?
+  usabilityGoal                  String?
+  gamificationGoal               String?
+  duration                       String?
+  notSuitableGamificationElement String?
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model suitable_gamification_elements {
+  rule_idx                Int?
+  ageGroup                String?
+  applicationDomain       String?
+  disorder                String?
+  gamificationGoal        String?
+  usabilityGoal           String?
+  usabilityCharacteristic String?
+  gamificationElement     String?
+  usabilityRecommendation String?
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model usability_characteristics {
+  rule_idx                Int?
+  usabilityGoal           String?
+  ageGroup                String?
+  disorder                String?
+  applicationDomain       String?
+  usabilityCharacteristic String?
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model usability_recommendations_for_gamification_elements_iso_ {
+  rule_idx                       Int?
+  gamificationElement            String?
+  ISOrecommendation              String?
+  elementUsabilityRecommendation String?
+  example                        String?
+
+  @@ignore
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model usability_recommendations_for_gamification_elements_wcag_2_2_ {
+  rule_idx                       Int?
+  gamificationElement            String?
+  disorder                       String?
+  WCAGrecommendation             String?
+  elementUsabilityRecommendation String?
+  example                        String?
+
+  @@ignore
+}

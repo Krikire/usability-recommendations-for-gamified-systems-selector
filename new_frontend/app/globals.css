@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+/* ── Design tokens ───────────────────────────────────────────────
+   World: usability standards + gamification badges. Violet method-
+   accent on a calm off-white reading canvas; selection feels earned.
+   Depth = soft-shadow lift on white over canvas, whisper-quiet borders.
+*/
+@theme {
+  /* Surfaces — same hue, lightness shifts only */
+  --color-canvas: #f4f4f7; /* page: off-white lavender-gray */
+  --color-surface: #ffffff; /* cards */
+  --color-surface-muted: #f3f3f7; /* insets, grouped panels */
+
+  /* Ink — four-level text hierarchy */
+  --color-ink: #18181f; /* primary / headlines */
+  --color-ink-secondary: #4b4b5a; /* body, supporting */
+  --color-ink-tertiary: #7a7a88; /* metadata, counts */
+  --color-ink-muted: #a6a6b2; /* placeholder, disabled */
+
+  /* Lines — quiet, progressive */
+  --color-line: rgba(24, 24, 40, 0.08);
+  --color-line-strong: rgba(24, 24, 40, 0.14);
+
+  /* Brand — violet method-accent (signature selection color) */
+  --color-brand: #5b50e6;
+  --color-brand-hover: #4a3fd4;
+  --color-brand-subtle: #ecebfe; /* badge / selected fill */
+  --color-brand-onsubtle: #4a3fd4; /* text on subtle */
+
+  /* Badge semantics — suitable (mint) / unsuitable (rose) */
+  --color-suitable: #0f9d6a;
+  --color-suitable-subtle: #e6f6ef;
+  --color-unsuitable: #d6456a;
+  --color-unsuitable-subtle: #fdedf1;
+
+  /* Radius scale */
+  --radius-input: 0.625rem; /* 10px — inputs, buttons, chips */
+  --radius-card: 1rem; /* 16px — cards, panels */
+  --radius-pop: 0.875rem; /* 14px — popovers */
+
+  /* Elevation — soft, barely-there */
+  --shadow-sm: 0 1px 2px rgba(24, 24, 40, 0.04);
+  --shadow-md: 0 4px 16px rgba(24, 24, 40, 0.06);
+  --shadow-pop: 0 10px 30px rgba(24, 24, 40, 0.12);
+}
+
+@theme inline {
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+body {
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+}

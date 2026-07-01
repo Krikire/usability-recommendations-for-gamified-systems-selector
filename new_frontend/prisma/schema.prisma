@@ -1,0 +1,191 @@
+// Prisma schema generated from DMN‑parsed tables (May 2025)
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum RecommendationStatus {
+  NON_FIT
+  PARTIAL_FIT
+  FIT
+}
+
+model GeneralisedRecommendations {
+  id                Int     @id @default(autoincrement())
+  ruleIdx           Int     @map("rule_idx")
+  usabilityGoal     String? @map("usabilityGoal")
+  usabilityPrinciple String? @map("usabilityPrinciple")
+  ageGroup          String? @map("ageGroup")
+  applicationDomain String? @map("applicationDomain")
+  disorder          String? @map("disorder")
+  gamificationGoal  String? @map("gamificationGoal")
+  genRecommendation String? @map("genRecommendation")
+  example           String? @map("example")
+
+  @@map("generalised_recommendations")
+  SavedGeneralisedRecommendation SavedGeneralisedRecommendation[]
+}
+
+model SavedGeneralisedRecommendation {
+  generalisedRecommendation GeneralisedRecommendations @relation(fields: [generalisedRecommendationId], references: [id])
+  generalisedRecommendationId Int
+  savedResultId            Int
+  selectionStatus           RecommendationStatus?
+  savedResult              SavedResult @relation(fields: [savedResultId], references: [id])
+  @@id([generalisedRecommendationId, savedResultId])
+}
+
+model SuitableGamificationElements {
+  id                    Int     @id @default(autoincrement())
+  ruleIdx               Int     @map("rule_idx")
+  ageGroup              String? @map("ageGroup")
+  applicationDomain     String? @map("applicationDomain")
+  disorder              String? @map("disorder")
+  gamificationGoal      String? @map("gamificationGoal")
+  usabilityGoal         String? @map("usabilityGoal")
+  usabilityCharacteristic String? @map("usabilityCharacteristic")
+  gamificationElement   String? @map("gamificationElement")
+  usabilityRecommendation String? @map("usabilityRecommendation")
+
+  @@map("suitable_gamification_elements")
+  SavedSuitableGamificationElements SavedSuitableGamificationElements[]
+  SavedElementUsabilityRecommendation SavedElementUsabilityRecommendation[]
+}
+
+model SavedSuitableGamificationElements {
+  suitableGamificationElements SuitableGamificationElements @relation(fields: [suitableGamificationElementsId], references: [id])
+  suitableGamificationElementsId Int
+  savedResultId               Int
+  selected                    Boolean @default(false)
+  savedResult                 SavedResult @relation(fields: [savedResultId], references: [id])
+  updatedAt                   DateTime @updatedAt @default(now())
+  createdAt                   DateTime @default(now())
+  @@id([suitableGamificationElementsId, savedResultId])
+}
+
+model SavedElementUsabilityRecommendation {
+  id                            Int      @id @default(autoincrement())
+  suitableGamificationElementsId Int
+  savedResultId                Int
+  selectionStatus               RecommendationStatus?
+
+  suitableGamificationElements SuitableGamificationElements @relation(fields: [suitableGamificationElementsId], references: [id])
+  savedResult                  SavedResult @relation(fields: [savedResultId], references: [id])
+
+  @@unique([suitableGamificationElementsId, savedResultId])
+}
+
+model UsabilityCharacteristics {
+  id                Int     @id @default(autoincrement())
+  ruleIdx           Int     @map("rule_idx")
+  usabilityGoal     String? @map("usabilityGoal")
+  ageGroup          String? @map("ageGroup")
+  disorder          String? @map("disorder")
+  applicationDomain String? @map("applicationDomain")
+  usabilityCharacteristic String? @map("usabilityCharacteristic")
+
+  @@map("usability_characteristics")
+  SavedUsabilityCharacteristics SavedUsabilityCharacteristics[]
+}
+
+model SavedUsabilityCharacteristics {
+  usabilityCharacteristics UsabilityCharacteristics @relation(fields: [usabilityCharacteristicsId], references: [id])
+  usabilityCharacteristicsId Int
+  savedResultId             Int
+  savedResult               SavedResult @relation(fields: [savedResultId], references: [id])
+  @@id([usabilityCharacteristicsId, savedResultId])
+}
+
+model UsabilityRecommendationsForGamificationElementsIso {
+  id                         Int     @id @default(autoincrement())
+  ruleIdx                    Int     @map("rule_idx")
+  gamificationElement        String? @map("gamificationElement")
+  isoRecommendation          String? @map("ISOrecommendation")
+  elementUsabilityRecommendation String? @map("elementUsabilityRecommendation")
+  example                    String? @map("example")
+
+  @@map("usability_recommendations_for_gamification_elements_iso_")
+  SavedUsabilityRecommendationsForGamificationElementsIso SavedUsabilityRecommendationsForGamificationElementsIso[]
+}
+
+model SavedUsabilityRecommendationsForGamificationElementsIso {
+  usabilityRecommendationsForGamificationElementsIso UsabilityRecommendationsForGamificationElementsIso @relation(fields: [usabilityRecommendationsForGamificationElementsIsoId], references: [id])
+  usabilityRecommendationsForGamificationElementsIsoId Int
+  selectionStatus           RecommendationStatus?
+  savedResultId             Int
+  savedResult               SavedResult @relation(fields: [savedResultId], references: [id])
+  @@id([usabilityRecommendationsForGamificationElementsIsoId, savedResultId])
+}
+
+model NotSuitableGamificationElements {
+  id                          Int     @id @default(autoincrement())
+  ruleIdx                     Int     @map("rule_idx")
+  ageGroup                    String? @map("ageGroup")
+  applicationDomain           String? @map("applicationDomain")
+  disorder                    String? @map("disorder")
+  usabilityGoal               String? @map("usabilityGoal")
+  gamificationGoal            String? @map("gamificationGoal")
+  duration                    String? @map("duration")
+  notSuitableGamificationElement String? @map("notSuitableGamificationElement")
+
+  @@map("not_suitable_gamification_elements")
+  SavedNotSuitableGamificationElements SavedNotSuitableGamificationElements[]
+}
+
+model SavedNotSuitableGamificationElements {
+  notSuitableGamificationElements NotSuitableGamificationElements @relation(fields: [notSuitableGamificationElementsId], references: [id])
+  notSuitableGamificationElementsId Int
+  savedResultId                  Int
+  selected                    Boolean @default(false)
+  savedResult                    SavedResult @relation(fields: [savedResultId], references: [id])
+  updatedAt                   DateTime @updatedAt @default(now())
+  createdAt                   DateTime @default(now())
+  @@id([notSuitableGamificationElementsId, savedResultId])
+}
+
+model UsabilityRecommendationsForGamificationElementsWcag22 {
+  id                         Int     @id @default(autoincrement())
+  ruleIdx                    Int     @map("rule_idx")
+  gamificationElement        String? @map("gamificationElement")
+  disorder                   String? @map("disorder")
+  wcagRecommendation         String? @map("WCAGrecommendation")
+  elementUsabilityRecommendation String? @map("elementUsabilityRecommendation")
+  example                    String? @map("example")
+
+  @@map("usability_recommendations_for_gamification_elements_wcag_2_2_")
+  SavedUsabilityRecommendationsForGamificationElementsWcag22 SavedUsabilityRecommendationsForGamificationElementsWcag22[]
+}
+
+model SavedUsabilityRecommendationsForGamificationElementsWcag22 {
+  usabilityRecommendationsForGamificationElementsWcag22 UsabilityRecommendationsForGamificationElementsWcag22 @relation(fields: [usabilityRecommendationsForGamificationElementsWcag22Id], references: [id], map: "FK_UsabilityRecForGamificationWcag22")
+  usabilityRecommendationsForGamificationElementsWcag22Id Int
+  savedResultId             Int
+  selectionStatus           RecommendationStatus?
+  savedResult               SavedResult @relation(fields: [savedResultId], references: [id])
+  @@id([usabilityRecommendationsForGamificationElementsWcag22Id, savedResultId])
+}
+
+model SavedResult {
+  id               Int     @id @default(autoincrement())
+  name             String
+  createdAt        DateTime @default(now())
+
+  SavedGeneralisedRecommendation SavedGeneralisedRecommendation[]
+
+  SavedSuitableGamificationElements SavedSuitableGamificationElements[]
+
+  SavedUsabilityCharacteristics SavedUsabilityCharacteristics[]
+
+  SavedUsabilityRecommendationsForGamificationElementsIso SavedUsabilityRecommendationsForGamificationElementsIso[]
+
+  SavedNotSuitableGamificationElements SavedNotSuitableGamificationElements[]
+
+  SavedUsabilityRecommendationsForGamificationElementsWcag22 SavedUsabilityRecommendationsForGamificationElementsWcag22[]
+
+  SavedElementUsabilityRecommendation SavedElementUsabilityRecommendation[]
+}
