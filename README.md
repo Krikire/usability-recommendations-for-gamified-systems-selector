@@ -188,4 +188,4 @@ The output SQL then replaces the seed data in the target database.
 
 ## License
 
-Not currently licensed — private academic project.
+MIT — see [LICENSE](LICENSE).
